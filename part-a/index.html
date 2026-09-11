@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Student Lead Capture Form</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1f2937;
+            font-size: 32px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+        select {
+            background: white;
+            cursor: pointer;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .course-options {
+            display: flex;
+            gap: 25px;
+            margin-top: 10px;
+        }
+
+        .course-options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: normal;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .course-options input {
+            cursor: pointer;
+        }
+
+        #counter {
+            text-align: right;
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #93c5fd;
+            cursor: not-allowed;
+        }
+
+        #successMessage {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 7px;
+            background: #dcfce7;
+            color: #166534;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        #errorMessage {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 7px;
+            background: #fee2e2;
+            color: #991b1b;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 10px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            .course-options {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <h1>Student Lead Capture Form</h1>
+
+    <form id="leadForm">
+
+        <!-- Full Name -->
+        <div class="form-group">
+
+            <label for="fullName">
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder="Enter your full name"
+                required
+            >
+
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group">
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email address"
+                required
+            >
+
+        </div>
+
+
+        <!-- Country -->
+        <div class="form-group">
+
+            <label for="country">
+                Country
+            </label>
+
+            <select
+                id="country"
+                name="country"
+                required
+            >
+
+                <option value="">
+                    Select your country
+                </option>
+
+                <option value="India">
+                    India
+                </option>
+
+                <option value="USA">
+                    USA
+                </option>
+
+                <option value="UK">
+                    United Kingdom
+                </option>
+
+                <option value="Canada">
+                    Canada
+                </option>
+
+                <option value="Australia">
+                    Australia
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Course Level -->
+        <div class="form-group">
+
+            <label>
+                Course Level
+            </label>
+
+            <div class="course-options">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="courseLevel"
+                        value="UG"
+                        required
+                    >
+                    UG
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="courseLevel"
+                        value="PG"
+                    >
+                    PG
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="courseLevel"
+                        value="PhD"
+                    >
+                    PhD
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- Preferred University -->
+        <div class="form-group">
+
+            <label for="university">
+                Preferred University
+            </label>
+
+            <input
+                type="text"
+                id="university"
+                name="university"
+                placeholder="Enter preferred university"
+            >
+
+        </div>
+
+
+        <!-- Message -->
+        <div class="form-group">
+
+            <label for="message">
+                Message
+            </label>
+
+            <textarea
+                id="message"
+                name="message"
+                maxlength="300"
+                placeholder="Tell us about your study interests..."
+            ></textarea>
+
+            <div id="counter">
+                0 / 300
+            </div>
+
+        </div>
+
+
+        <!-- Submit -->
+        <button type="submit" id="submitButton">
+            Submit
+        </button>
+
+
+        <!-- Success Message -->
+        <div id="successMessage">
+            Your information has been submitted successfully!
+        </div>
+
+
+        <!-- Error Message -->
+        <div id="errorMessage">
+            Something went wrong. Please try again.
+        </div>
+
+    </form>
+
+
+    <script>
+
+        const message = document.getElementById("message");
+        const counter = document.getElementById("counter");
+        const form = document.getElementById("leadForm");
+        const successMessage = document.getElementById("successMessage");
+        const errorMessage = document.getElementById("errorMessage");
+        const submitButton = document.getElementById("submitButton");
+
+
+        // n8n Webhook URL
+        const webhookURL =
+            "https://shubhjaiswal01.app.n8n.cloud/webhook/7f45c448-f6b7-4818-894a-e33c0484d368";
+
+
+        // Character counter
+        message.addEventListener("input", function () {
+
+            counter.textContent =
+                message.value.length + " / 300";
+
+        });
+
+
+        // Form submission
+        form.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            // Hide previous messages
+            successMessage.style.display = "none";
+            errorMessage.style.display = "none";
+
+            // Disable button while submitting
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+
+
+            // Collect complete form data
+            const formData = {
+
+                fullName:
+                    document.getElementById("fullName").value,
+
+                email:
+                    document.getElementById("email").value,
+
+                country:
+                    document.getElementById("country").value,
+
+                courseLevel:
+                    document.querySelector(
+                        'input[name="courseLevel"]:checked'
+                    ).value,
+
+                university:
+                    document.getElementById("university").value,
+
+                message:
+                    document.getElementById("message").value
+
+            };
+
+
+            try {
+
+                // Send data to n8n
+                const response = await fetch(
+                    webhookURL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(formData)
+                    }
+                );
+
+
+                // Check response
+                if (!response.ok) {
+                    throw new Error(
+                        "Webhook request failed"
+                    );
+                }
+
+
+                // Show success message
+                successMessage.style.display = "block";
+
+
+                // Reset form
+                form.reset();
+
+                counter.textContent = "0 / 300";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error sending data:",
+                    error
+                );
+
+                errorMessage.style.display = "block";
+
+            }
+
+
+            // Enable button again
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit";
+
+        });
+
+    </script>
+
+</body>
+
+</html>

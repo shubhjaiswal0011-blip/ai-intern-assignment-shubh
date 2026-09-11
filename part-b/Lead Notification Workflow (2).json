@@ -1,0 +1,276 @@
+{
+  "name": "Lead Notification Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "shubhjaiswal0011@gmail.com",
+        "subject": "New PG/PhD Student registered",
+        "emailType": "text",
+        "message": "=Credential: Gmail account Resource: Message Operation: Send  To: your Gmail Subject: New PG/PhD Student Lead Email Type: HTML  Message: New High-Priority Student Lead Name: {{$json.name}} Email: {{$json.email}} Course Level: {{$json.courseLevel}} Message: {{$json.message}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "21886fb3-a74d-41f2-9d8c-71e3a5a50fe8",
+      "name": "Send a message",
+      "webhookId": "d0f5d088-a267-4f23-930d-aaf3f48f9399",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OmAJHkJn6NMXG7oo",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "daf7b26c-2472-4e1c-b64b-da5d3d464774",
+              "name": "name",
+              "value": "={{ $json.body.fullName }}",
+              "type": "string"
+            },
+            {
+              "id": "8d983a04-9509-456a-ab9d-93cf5c5c02e4",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "686f82a7-ebb4-4d1e-8d74-b210647b003d",
+              "name": "courseLevel",
+              "value": "={{ $json.body.courseLevel }}",
+              "type": "string"
+            },
+            {
+              "id": "b589a753-af6c-49bf-be88-436bae6ca1ce",
+              "name": "message",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        240,
+        0
+      ],
+      "id": "08c434c3-a3a3-4543-a622-9c41a47720ea",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "7f45c448-f6b7-4818-894a-e33c0484d368",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c50efbba-1730-4aa2-a4ec-858eeec249ba",
+      "name": "Webhook",
+      "webhookId": "7f45c448-f6b7-4818-894a-e33c0484d368"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-pFJQFlg8Kismid0ceXz10sZoW6mIZIhVjpbtfIMn70",
+          "mode": "list",
+          "cachedResultName": "Shubh n8n internship",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-pFJQFlg8Kismid0ceXz10sZoW6mIZIhVjpbtfIMn70/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-pFJQFlg8Kismid0ceXz10sZoW6mIZIhVjpbtfIMn70/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.name }}",
+            "Email": "={{ $json.email }}",
+            "Course Level": "={{ $json.courseLevel }}",
+            "Message": "={{ $json.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Course Level",
+              "displayName": "Course Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        96
+      ],
+      "id": "b2d16073-a3f2-4b4f-b9b3-284b14015c7b",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FMppyUBTnm1QNBrk",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "84746255-b4c4-459d-892a-59b197fe303d",
+              "leftValue": "={{ $json.courseLevel }}",
+              "rightValue": "PG",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "66985830-5345-4ab3-9d4e-3bd54d62cff9",
+              "leftValue": "={{ $json.courseLevel }}",
+              "rightValue": "PhD",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "15ed50e5-6b9f-4c57-be5f-162d66e41311",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "255e9541-ab36-4ad5-8b52-885cb64225d1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4446a1fce5f0adc9089a300c52857fb63156976c9049ff104d9d840e610a261"
+  },
+  "nodeGroups": [],
+  "id": "LggRw81QYGAeMK4Y",
+  "tags": []
+}

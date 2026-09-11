@@ -1,0 +1,224 @@
+{
+  "name": "Scheduled Weather Data Fetch",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "latitude",
+              "value": "28.6139"
+            },
+            {
+              "name": "longitude",
+              "value": "77.2090"
+            },
+            {
+              "name": "current",
+              "value": "temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m"
+            },
+            {
+              "name": "daily",
+              "value": "temperature_2m_max,temperature_2m_min,precipitation_sum"
+            },
+            {
+              "name": "timezone",
+              "value": "auto"
+            },
+            {
+              "name": "forecast_days",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "175fc027-e885-4326-be37-84d3b259d1f6",
+      "name": "Fetch",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Map WMO weather codes to human-readable descriptions\nconst weatherCodes = {\n  0: 'Clear sky',\n  1: 'Mainly clear',\n  2: 'Partly cloudy',\n  3: 'Overcast',\n  45: 'Fog',\n  48: 'Depositing rime fog',\n  51: 'Light drizzle',\n  53: 'Moderate drizzle',\n  55: 'Dense drizzle',\n  61: 'Slight rain',\n  63: 'Moderate rain',\n  65: 'Heavy rain',\n  71: 'Slight snowfall',\n  73: 'Moderate snowfall',\n  75: 'Heavy snowfall',\n  80: 'Slight rain showers',\n  81: 'Moderate rain showers',\n  82: 'Violent rain showers',\n  95: 'Thunderstorm',\n  96: 'Thunderstorm with slight hail',\n  99: 'Thunderstorm with heavy hail',\n};\n\nconst data = $json;\nconst current = data.current || {};\nconst daily = data.daily || {};\n\nconst code = current.weather_code;\nconst description = weatherCodes[code] !== undefined ? weatherCodes[code] : 'Unknown';\n\nreturn {\n  json: {\n    location_latitude: data.latitude,\n    location_longitude: data.longitude,\n    timezone: data.timezone,\n    observed_at: current.time,\n    temperature_c: current.temperature_2m,\n    feels_like_c: current.apparent_temperature,\n    humidity_percent: current.relative_humidity_2m,\n    precipitation_mm: current.precipitation,\n    wind_speed_kmh: current.wind_speed_10m,\n    is_daytime: current.is_day === 1,\n    weather_code: code,\n    weather_description: description,\n    forecast_high_c: Array.isArray(daily.temperature_2m_max) ? daily.temperature_2m_max[0] : null,\n    forecast_low_c: Array.isArray(daily.temperature_2m_min) ? daily.temperature_2m_min[0] : null,\n    forecast_precipitation_mm: Array.isArray(daily.precipitation_sum) ? daily.precipitation_sum[0] : null,\n  },\n};"
+      },
+      "id": "611c50f0-ff6c-4d57-b19e-61df80d5cd6e",
+      "name": "Transform",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "Location",
+              "value": "={{ $json.location_latitude }}, {{ $json.location_longitude }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "Timezone",
+              "value": "={{ $json.timezone }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "Observed At",
+              "value": "={{ $json.observed_at }}",
+              "type": "string"
+            },
+            {
+              "id": "a4",
+              "name": "Conditions",
+              "value": "={{ $json.weather_description }}",
+              "type": "string"
+            },
+            {
+              "id": "a5",
+              "name": "Temperature (°C)",
+              "value": "={{ $json.temperature_c }}",
+              "type": "number"
+            },
+            {
+              "id": "a6",
+              "name": "Feels Like (°C)",
+              "value": "={{ $json.feels_like_c }}",
+              "type": "number"
+            },
+            {
+              "id": "a7",
+              "name": "Humidity (%)",
+              "value": "={{ $json.humidity_percent }}",
+              "type": "number"
+            },
+            {
+              "id": "a8",
+              "name": "Wind Speed (km/h)",
+              "value": "={{ $json.wind_speed_kmh }}",
+              "type": "number"
+            },
+            {
+              "id": "a9",
+              "name": "Precipitation (mm)",
+              "value": "={{ $json.precipitation_mm }}",
+              "type": "number"
+            },
+            {
+              "id": "a10",
+              "name": "Daytime",
+              "value": "={{ $json.is_daytime }}",
+              "type": "boolean"
+            },
+            {
+              "id": "a11",
+              "name": "Forecast High (°C)",
+              "value": "={{ $json.forecast_high_c }}",
+              "type": "number"
+            },
+            {
+              "id": "a12",
+              "name": "Forecast Low (°C)",
+              "value": "={{ $json.forecast_low_c }}",
+              "type": "number"
+            },
+            {
+              "id": "a13",
+              "name": "Forecast Precipitation (mm)",
+              "value": "={{ $json.forecast_precipitation_mm }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "495ff525-00f7-44a7-91d7-f4dc7ffa251d",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "41013fe9-958e-4d85-ad61-0f8788588ed8",
+      "name": "schedule at 9 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Fetch": {
+      "main": [
+        [
+          {
+            "node": "Transform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "schedule at 9 AM": {
+      "main": [
+        [
+          {
+            "node": "Fetch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "3af0587c-9a16-438b-9acf-9f950dcb3db0",
+  "meta": {
+    "instanceId": "d4446a1fce5f0adc9089a300c52857fb63156976c9049ff104d9d840e610a261"
+  },
+  "nodeGroups": [],
+  "id": "i9bVWjVlGE9nqheP",
+  "tags": []
+}
